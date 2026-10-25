@@ -2,6 +2,9 @@
 
 A Flask application for exploring historical sales data and generating a short-term sales forecast. The backend cleans uploaded CSV files, aggregates monthly revenue, fits a linear regression on a sequential month index, and evaluates it on a chronological holdout set. The frontend shows KPIs, charts, a three-month projection, and a searchable transaction table.
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Maroof-Memon/sales-forecasting-dashboard)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/Maroof-Memon/sales-forecasting-dashboard)
+
 ## Features
 
 - CSV upload with date and sales column detection
