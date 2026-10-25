@@ -1,0 +1,49 @@
+Order ID,Order Date,Category,Product,Quantity,Sales,Profit
+ORD-1001,2024-01-15,Technology,Wireless Mouse,3,75.00,22.50
+ORD-1002,2024-01-22,Furniture,Ergonomic Chair,1,280.00,84.00
+ORD-1003,2024-02-05,Office Supplies,Gel Pens Pack,5,35.00,14.00
+ORD-1004,2024-02-18,Technology,Mechanical Keyboard,2,190.00,57.00
+ORD-1005,2024-03-02,Furniture,Standing Desk,1,450.00,112.50
+ORD-1006,2024-03-19,Office Supplies,Letter Sized Paper,10,60.00,18.00
+ORD-1007,2024-04-10,Technology,USB-C Hub,4,160.00,48.00
+ORD-1008,2024-04-24,Furniture,Desk Lamp,2,110.00,33.00
+ORD-1009,2024-05-08,Technology,External SSD 1TB,2,220.00,66.00
+ORD-1010,2024-05-21,Office Supplies,Heavy Duty Stapler,3,45.00,13.50
+ORD-1011,2024-06-03,Furniture,Bookshelf,1,320.00,80.00
+ORD-1012,2024-06-18,Technology,27-inch Monitor,2,640.00,160.00
+ORD-1013,2024-07-09,Office Supplies,Storage Binders,8,96.00,28.80
+ORD-1014,2024-07-22,Technology,Noise Cancelling Headphones,1,250.00,75.00
+ORD-1015,2024-08-04,Furniture,Monitor Arm Stand,2,140.00,42.00
+ORD-1016,2024-08-19,Technology,Webcam 1080p,3,210.00,63.00
+ORD-1017,2024-09-07,Office Supplies,Whiteboard Set,2,130.00,39.00
+ORD-1018,2024-09-25,Furniture,Filing Cabinet,1,260.00,65.00
+ORD-1019,2024-10-11,Technology,Bluetooth Speaker,2,180.00,54.00
+ORD-1020,2024-10-28,Office Supplies,Desk Organizer,4,80.00,24.00
+ORD-1021,2024-11-05,Technology,Laptop Stand Aluminum,3,135.00,40.50
+ORD-1022,2024-11-20,Furniture,Conference Table,1,850.00,212.50
+ORD-1023,2024-12-08,Technology,Ultra HD Webcam,2,320.00,96.00
+ORD-1024,2024-12-22,Office Supplies,Printer Toner Black,2,190.00,57.00
+ORD-1025,2025-01-12,Furniture,Executive Leather Chair,1,520.00,130.00
+ORD-1026,2025-01-26,Technology,Mechanical Keyboard,3,285.00,85.50
+ORD-1027,2025-02-09,Office Supplies,Thermal Laminator,2,110.00,33.00
+ORD-1028,2025-02-23,Technology,Curved Gaming Monitor,1,580.00,145.00
+ORD-1029,2025-03-08,Furniture,Electric Standing Desk,2,980.00,245.00
+ORD-1030,2025-03-22,Office Supplies,Copy Paper Case,12,96.00,28.80
+ORD-1031,2025-04-06,Technology,Docking Station 4K,2,360.00,108.00
+ORD-1032,2025-04-19,Furniture,Ergonomic Footrest,4,120.00,36.00
+ORD-1033,2025-05-04,Office Supplies,Shredder Cross-Cut,1,160.00,48.00
+ORD-1034,2025-05-18,Technology,Wireless Presenter,3,105.00,31.50
+ORD-1035,2025-06-02,Furniture,Mesh Drafting Stool,2,340.00,85.00
+ORD-1036,2025-06-21,Technology,Portable SSD 2TB,2,380.00,114.00
+ORD-1037,2025-07-05,Office Supplies,Sticky Notes Multipack,15,60.00,18.00
+ORD-1038,2025-07-19,Technology,Laser Printer All-in-One,1,420.00,105.00
+ORD-1039,2025-08-08,Furniture,Office Sofa Loveseat,1,750.00,187.50
+ORD-1040,2025-08-23,Office Supplies,Dry Erase Markers,10,50.00,15.00
+ORD-1041,2025-09-04,Technology,Dual Monitor Arm,2,180.00,54.00
+ORD-1042,2025-09-19,Furniture,Reception Counter,1,690.00,172.50
+ORD-1043,2025-10-06,Technology,Smart Surge Protector,5,150.00,45.00
+ORD-1044,2025-10-21,Office Supplies,File Storage Boxes,6,72.00,21.60
+ORD-1045,2025-11-09,Technology,Bluetooth Headset Pro,2,310.00,93.00
+ORD-1046,2025-11-24,Furniture,L-Shaped Corner Desk,1,640.00,160.00
+ORD-1047,2025-12-07,Office Supplies,Calculators Desktop,4,100.00,30.00
+ORD-1048,2025-12-21,Technology,Studio USB Microphone,2,260.00,78.00

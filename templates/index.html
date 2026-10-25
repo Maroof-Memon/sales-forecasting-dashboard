@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sales Forecasting Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-container">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+            <polyline points="17 6 23 6 23 12"></polyline>
+          </svg>
+        </div>
+        <div>
+          <h1 class="brand-title">Sales Forecasting Dashboard</h1>
+          <p class="brand-subtitle">Python Flask · Live Currency Rates · Pandas · Scikit-learn · Chart.js</p>
+        </div>
+      </div>
+      <div class="header-actions">
+        <button id="btn-reset-data" class="btn btn-secondary" title="Reset back to default sample dataset">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+            <path d="M21 3v5h-5"></path>
+            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+            <path d="M8 16H3v5"></path>
+          </svg>
+          Reset Sample
+        </button>
+        <button id="btn-export-zip" class="btn btn-primary" title="Download the complete Flask project folder">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Download Project (ZIP)
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="main-container">
+    <!-- Alerts -->
+    <div id="alert-box" class="alert hidden" role="alert">
+      <span id="alert-message"></span>
+      <button id="alert-close" class="alert-close" aria-label="Close alert">&times;</button>
+    </div>
+
+    <!-- Dataset and upload controls -->
+    <section class="toolbar-card">
+      <div class="toolbar-left">
+        <span class="toolbar-label">Active Dataset:</span>
+        <strong id="active-dataset-name" class="dataset-badge">Loading dataset...</strong>
+        <span id="dataset-row-count" class="text-muted">(0 transactions)</span>
+      </div>
+      <div class="toolbar-right">
+        <!-- Base Currency (Source data) -->
+        <div class="currency-selector-wrapper">
+          <label for="base-currency-select" class="currency-label">Data Currency:</label>
+          <select id="base-currency-select" class="currency-select" title="Original currency of the uploaded file">
+            <option value="PKR">PKR (Pakistani Rupee)</option>
+            <option value="USD">USD (US Dollar)</option>
+            <option value="EUR">EUR (Euro)</option>
+            <option value="GBP">GBP (British Pound)</option>
+            <option value="INR">INR (Indian Rupee)</option>
+            <option value="AED">AED (UAE Dirham)</option>
+            <option value="SAR">SAR (Saudi Riyal)</option>
+          </select>
+        </div>
+
+        <!-- Target Display Currency (Live Converter) -->
+        <div class="currency-selector-wrapper">
+          <label for="display-currency-select" class="currency-label">Convert To:</label>
+          <select id="display-currency-select" class="currency-select currency-select-active" title="Target currency to convert and display all values">
+            <option value="PKR">PKR (Rs.) - Pakistani Rupee</option>
+            <option value="USD">USD ($) - US Dollar</option>
+            <option value="EUR">EUR (€) - Euro</option>
+            <option value="GBP">GBP (£) - British Pound</option>
+            <option value="INR">INR (₹) - Indian Rupee</option>
+            <option value="AED">AED (د.إ) - UAE Dirham</option>
+            <option value="SAR">SAR (﷼) - Saudi Riyal</option>
+          </select>
+        </div>
+
+        <form id="upload-form" class="upload-form">
+          <input type="file" id="csv-file-input" accept=".csv" class="file-input-hidden" />
+          <label for="csv-file-input" class="btn btn-upload">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="17 8 12 3 7 8"></polyline>
+              <line x1="12" y1="3" x2="12" y2="15"></line>
+            </svg>
+            Upload Custom CSV
+          </label>
+        </form>
+      </div>
+    </section>
+
+    <!-- Exchange-rate ribbon -->
+    <section id="exchange-rate-ribbon" class="exchange-ribbon">
+      <div class="rate-indicator-left">
+        <span class="live-pulse"></span>
+        <span class="rate-status-label" id="rate-status-label">Live Exchange Rates Active:</span>
+        <span id="rate-summary-text" class="rate-summary-text">1 USD = 276.25 PKR · 1 EUR = 309.50 PKR</span>
+      </div>
+      <div class="rate-indicator-right">
+        <span id="conversion-notice" class="conversion-notice">Real-time conversion applied to all metrics, charts, and forecasts</span>
+        <button id="btn-refresh-rates" class="btn-refresh-rates" title="Refresh live rates from exchange rate API">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"></polyline>
+            <polyline points="1 20 1 14 7 14"></polyline>
+            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+          </svg>
+          Sync Rates
+        </button>
+      </div>
+    </section>
+
+    <!-- KPI cards -->
+    <section class="kpi-grid">
+      <!-- Total Sales -->
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-title">Total Sales</span>
+          <div class="kpi-icon icon-blue">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+          </div>
+        </div>
+        <div id="kpi-total-sales" class="kpi-value">$0.00</div>
+        <div class="kpi-footnote">Gross revenue from all orders</div>
+      </div>
+
+      <!-- Total Profit (conditionally shown if available) -->
+      <div id="kpi-profit-card" class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-title">Total Profit</span>
+          <div class="kpi-icon icon-emerald">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+          </div>
+        </div>
+        <div id="kpi-total-profit" class="kpi-value">$0.00</div>
+        <div id="kpi-profit-margin" class="kpi-footnote">0% overall profit margin</div>
+      </div>
+
+      <!-- Total Orders -->
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-title">Total Orders</span>
+          <div class="kpi-icon icon-slate">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>
+          </div>
+        </div>
+        <div id="kpi-total-orders" class="kpi-value">0</div>
+        <div class="kpi-footnote">Unique transaction IDs</div>
+      </div>
+
+      <!-- Average Order Value -->
+      <div class="kpi-card">
+        <div class="kpi-header">
+          <span class="kpi-title">Average Order Value</span>
+          <div class="kpi-icon icon-amber">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect><line x1="1" y1="10" x2="23" y2="10"></line></svg>
+          </div>
+        </div>
+        <div id="kpi-avg-order-value" class="kpi-value">$0.00</div>
+        <div class="kpi-footnote">Revenue per transaction</div>
+      </div>
+    </section>
+
+    <!-- Charts -->
+    <section class="charts-row">
+      <!-- Monthly trend chart -->
+      <div class="chart-card">
+        <div class="chart-header">
+          <div>
+            <h2 class="chart-title">Monthly Sales Trend</h2>
+            <p class="chart-subtitle">Monthly revenue over time</p>
+          </div>
+          <span class="badge">Line Chart</span>
+        </div>
+        <div class="chart-canvas-wrapper">
+          <canvas id="monthlyTrendChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Category chart -->
+      <div id="category-chart-card" class="chart-card">
+        <div class="chart-header">
+          <div>
+            <h2 class="chart-title">Sales by Category</h2>
+            <p class="chart-subtitle">Revenue distribution across product segments</p>
+          </div>
+          <span class="badge">Bar Chart</span>
+        </div>
+        <div class="chart-canvas-wrapper">
+          <canvas id="categorySalesChart"></canvas>
+        </div>
+      </div>
+    </section>
+
+    <!-- Forecast section -->
+    <section class="forecast-section">
+      <div class="forecast-card">
+        <div class="forecast-header">
+          <div>
+            <div class="title-with-pill">
+              <h2 class="chart-title">Sales Forecast (Next 3 Months)</h2>
+              <span class="forecast-tag">Scikit-learn Regression</span>
+            </div>
+            <p class="chart-subtitle">
+              Linear regression on a sequential month index; the last 25% of months are held out for evaluation.
+            </p>
+          </div>
+          <div id="model-metrics-container" class="model-metrics-strip">
+            <!-- Holdout metrics -->
+          </div>
+        </div>
+
+        <div id="forecast-cards-grid" class="forecast-cards-grid">
+          <!-- Projection cards -->
+        </div>
+
+        <!-- Actuals and forecast chart -->
+        <div class="chart-canvas-wrapper forecast-canvas-wrapper">
+          <canvas id="forecastChart"></canvas>
+        </div>
+
+        <div class="forecast-footer">
+          <span class="note-asterisk">*</span> Forecast values are model estimates based on the historical trend. The metrics above are measured on the holdout period.
+        </div>
+      </div>
+    </section>
+
+    <!-- Transactions -->
+    <section class="table-section">
+      <div class="table-card">
+        <div class="table-header">
+          <div>
+            <h2 class="chart-title">Historical Sales Transactions</h2>
+            <p class="chart-subtitle">Cleaned records from active dataset (most recent 50 transactions)</p>
+          </div>
+          <div class="table-search-box">
+            <input type="text" id="table-search-input" placeholder="Search orders, categories, dates..." class="search-input" />
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr id="table-head-row">
+                <th>Order ID</th>
+                <th>Order Date</th>
+                <th>Category</th>
+                <th>Product</th>
+                <th class="text-right">Qty</th>
+                <th class="text-right">Sales</th>
+                <th id="th-profit" class="text-right">Profit</th>
+              </tr>
+            </thead>
+            <tbody id="table-body">
+              <tr>
+                <td colspan="7" class="text-center py-6 text-muted">Loading transactions...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <p class="text-muted">Sales Forecasting & Business Intelligence Dashboard · Live Multi-Currency Analytics</p>
+    </div>
+  </footer>
+
+  <!-- Dashboard controller -->
+  <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+</body>
+</html>
