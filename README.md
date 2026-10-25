@@ -44,6 +44,20 @@ python app.py
 
 Open http://127.0.0.1:5000. The `run.bat` and `run.sh` scripts install dependencies and start the server in one step.
 
+## Run in GitHub Codespaces
+
+Open the repository in a Codespace. The devcontainer installs the dependencies and starts the Flask server on port 5000. Make the forwarded port public if you need a shareable preview URL.
+
+## Deploy
+
+GitHub Pages cannot host a Flask server. The included `render.yaml` deploys the app to Render:
+
+1. Create a Render account and connect this repository.
+2. Create a new Blueprint and apply `render.yaml`.
+3. Render installs `requirements.txt` and starts the app with Waitress.
+
+The free Render plan sleeps after inactivity, so the first request after a pause may be slow.
+
 ## CSV format
 
 Required columns:
